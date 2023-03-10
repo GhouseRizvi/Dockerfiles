@@ -1,0 +1,3 @@
+How to filter docker images by filter
+docker image prune --all -f --filter label!=storage="do_not_delete"
+
