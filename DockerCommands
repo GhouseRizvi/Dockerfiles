@@ -1,3 +1,5 @@
 How to filter docker images by filter
 docker image prune --all -f --filter label!=storage="do_not_delete"
 
+Before pushing the local image to the docker hub we need to re tag it using the below commands
+docker tag copy:v1 ghouserizvi/copy:v1
