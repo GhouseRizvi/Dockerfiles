@@ -1,3 +1,2 @@
  FROM almalinux
- RUN touch /temp/hello.txt
- 
+ RUN > /temp/hello.txt
