@@ -227,3 +227,45 @@ This will extract the myarchive.tar.gz file and add its contents to the /app/ di
 
 Note that in each of these examples, the ADD instruction is followed by the source file or directory on the host, and then the destination directory inside the Docker image.
 
+### ENTRYPOINT #################
+In Docker, ENTRYPOINT is a Dockerfile instruction that specifies the command to be run when a container based on the image is started.
+
+The ENTRYPOINT instruction takes the following form:
+
+ENTRYPOINT ["executable", "param1", "param2"]
+where executable is the command to be executed when the container starts, and param1, param2, etc. are optional parameters to be passed to the command.
+
+The ENTRYPOINT instruction is often used in conjunction with the CMD instruction, which provides default arguments to the command specified by ENTRYPOINT. If CMD is also specified, it will be passed as additional arguments to the command specified by ENTRYPOINT.
+
+For example, consider the following Dockerfile:
+
+FROM ubuntu
+ENTRYPOINT ["echo", "Hello"]
+CMD ["world"]
+In this case, the ENTRYPOINT specifies the command echo Hello, and the CMD specifies the argument world. When a container is created from this image, the command that will be executed is echo Hello world.
+
+It's important to note that any commands specified in the CMD instruction will override any arguments specified on the command line when the container is started. However, arguments specified on the command line can still be passed to the ENTRYPOINT command by using the --entrypoint option when running the docker run command.
+
+Here are a few examples of how the ENTRYPOINT instruction can be used in Docker:
+
+### A simple example using the echo command:
+
+FROM alpine
+ENTRYPOINT ["echo", "Hello, world!"]
+In this example, the ENTRYPOINT specifies the echo command with the argument "Hello, world!". When a container is created from this image, the command that will be executed is echo Hello, world!.
+
+1. A more complex example using a custom script:
+
+FROM ubuntu
+COPY myscript.sh /usr/local/bin/
+ENTRYPOINT ["myscript.sh"]
+CMD ["arg1", "arg2"]
+In this example, the ENTRYPOINT specifies a custom script called myscript.sh that has been copied into the /usr/local/bin/ directory inside the container. The CMD specifies default arguments to be passed to the script. When a container is created from this image, the myscript.sh command will be executed with the arguments arg1 and arg2 (unless overridden by arguments passed on the command line).
+
+2. An example that uses the exec command:
+
+FROM alpine
+ENTRYPOINT ["exec", "nginx", "-g", "daemon off;"]
+In this example, the ENTRYPOINT specifies the exec command with the arguments nginx and -g daemon off;. This is a common pattern for running a long-running process in the container, such as a web server like nginx. The exec command replaces the shell process with the specified command (in this case nginx), which can help avoid issues with signal handling and process management.
+
+Note that in all of these examples, the ENTRYPOINT instruction specifies the command to be executed when the container is started, and any arguments passed to the container are passed as additional arguments to that command.
