@@ -105,3 +105,34 @@ FROM ubuntu:latest
 EXPOSE 8000-9000
 CMD ["node", "server.js"]
 This Dockerfile specifies that the container will listen on ports 8000 to 9000. The CMD directive specifies the command that will run when the container starts, which in this case is a Node.js server.
+
+
+### ENV #####
+In Docker, ENV is used to set environment variables that can be accessed by processes running inside a container. An environment variable is a key-value pair that provides configuration or runtime information to an application.
+
+Using ENV in Docker allows you to:
+
+1. Set values that can be accessed from multiple layers within a Dockerfile
+2. Set values that can be passed to a container when it is created using docker run
+3. Provide runtime configuration for applications running inside a container
+
+here are a few examples of using ENV in Docker:
+1. Setting a database connection string:
+
+ENV DB_HOST=localhost
+ENV DB_PORT=5432
+ENV DB_NAME=mydatabase
+ENV DB_USER=myuser
+ENV DB_PASSWORD=mypassword
+
+2. Setting a timezone:
+ENV TZ=Europe/London
+
+3. Setting a default port for a web server:
+ENV PORT=80
+
+4. Setting a default value for a command-line argument:
+ENV DEFAULT_MESSAGE="Hello, world!"
+
+5. Setting a path to a configuration file:
+ENV CONFIG_PATH=/app/config.json
