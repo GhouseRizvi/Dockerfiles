@@ -136,3 +136,54 @@ ENV DEFAULT_MESSAGE="Hello, world!"
 
 5. Setting a path to a configuration file:
 ENV CONFIG_PATH=/app/config.json
+
+
+### COPY ####
+In Docker, COPY is a command that is used to copy files and directories from the host machine to a Docker container. The COPY instruction in a Dockerfile is used to copy files or directories from the host machine to the container's file system.
+
+Here's the syntax for the COPY command:
+
+ COPY <src> <dest>
+<src> specifies the path of the file or directory on the host machine that you want to copy, and <dest> specifies the path in the container's file system where you want to copy the file or directory.
+
+Here's an example of how to use COPY in a Dockerfile:
+
+FROM ubuntu:latest
+WORKDIR /app
+COPY app.py .
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+CMD [ "python", "app.py" ]
+
+In this example, we're creating a Docker image based on the latest version of the Ubuntu operating system. We're setting the working directory to /app in the container's file system. We're then using the COPY command to copy the app.py file and the requirements.txt file from the host machine to the /app directory in the container.
+
+After that, we're running the pip install command to install the packages listed in requirements.txt. Finally, we're setting the command to run when the container is started to python app.py.
+
+Using COPY in Docker makes it easy to include files and directories from the host machine in the Docker image, which can be useful for including configuration files, scripts, and other assets needed by the application running in the container.
+
+# here are a few examples of using the COPY command in Docker:
+
+1. Copying a single file:
+
+COPY app.py /app/
+In this example, we're copying the file app.py from the host machine to the /app/ directory in the container.
+
+2. Copying a directory:
+
+COPY src/ /app/src/
+In this example, we're copying the entire src/ directory from the host machine to the /app/src/ directory in the container.
+
+3. Copying multiple files:
+
+COPY file1.txt file2.txt /app/
+In this example, we're copying the files file1.txt and file2.txt from the host machine to the /app/ directory in the container.
+
+4. Using wildcards:
+
+COPY *.txt /app/
+In this example, we're copying all files with the .txt extension from the host machine to the /app/ directory in the container.
+
+5. Copying a file with a different name:
+
+COPY app.py main.py
+In this example, we're copying the file app.py from the host machine to the container and renaming it to main.py.
