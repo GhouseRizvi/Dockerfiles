@@ -187,3 +187,43 @@ In this example, we're copying all files with the .txt extension from the host m
 
 COPY app.py main.py
 In this example, we're copying the file app.py from the host machine to the container and renaming it to main.py.
+
+##### ADD ##################
+ADD is a Dockerfile instruction that is used to copy files or directories from a source on the host into a destination in the Docker image.
+
+The syntax for the ADD instruction is:
+
+ADD <src> <dest>
+
+Where <src> is the source of the file or directory to be copied, which can be a local file or directory on the host, a URL, or a file or directory inside the build context. <dest> is the path where the file or directory will be copied inside the Docker image.
+
+It's important to note that ADD is intended to copy files or directories into the Docker image during the build process, rather than during runtime. If you need to copy files into a running container, you should use the docker cp command instead.
+
+* Unlike the COPY instruction, the ADD instruction can also extract tar files automatically, which can be useful for adding compressed files to the Docker image. However, it's generally recommended to use COPY instead of ADD for copying individual files, as it has a simpler syntax and behavior.
+
+* Furthermore, ADD has a few more features, such as being able to download a file from a URL, unpack compressed files, and automatically adjust file permissions. But, the use of COPY is still preferred for its simplicity and predictable behavior.
+
+Here are a few examples of how the ADD instruction can be used in Docker:
+
+## Copy a file from the host to a Docker image:
+
+1. ADD myfile.txt /app/
+This will copy the file myfile.txt from the host into the /app/ directory inside the Docker image.
+
+2. Copy a directory from the host to a Docker image:
+
+ADD mydir /app/
+This will copy the entire mydir directory from the host into the /app/ directory inside the Docker image.
+
+3. Download a file from a URL and add it to a Docker image:
+
+ADD https://example.com/myfile.txt /app/
+This will download the file myfile.txt from the URL https://example.com/myfile.txt and add it to the /app/ directory inside the Docker image.
+
+4. Extract a compressed file and add it to a Docker image:
+
+ADD myarchive.tar.gz /app/
+This will extract the myarchive.tar.gz file and add its contents to the /app/ directory inside the Docker image.
+
+Note that in each of these examples, the ADD instruction is followed by the source file or directory on the host, and then the destination directory inside the Docker image.
+
