@@ -310,3 +310,142 @@ ONBUILD COPY . .
 CMD ["npm", "start"]
 In this example, the ONBUILD COPY instruction copies the package*.json file to the /app directory in the image. The ONBUILD RUN instruction installs the dependencies specified in package.json. Finally, the ONBUILD COPY instruction copies the entire contents of the current directory to the /app directory in the image. When this Dockerfile is built into an image, the ONBUILD instructions are added as triggers to the image. When another Dockerfile is built using this image as the base, the ONBUILD instructions will be executed before any other instructions in the new Dockerfile.
 
+### WORKDIR #########
+WORKDIR is a Dockerfile instruction that sets the working directory for any RUN, CMD, ENTRYPOINT, COPY, and ADD instructions that follow it in the Dockerfile. It is used to set the default directory where the commands in the Dockerfile will be executed.
+
+The syntax for the WORKDIR instruction is:
+
+
+WORKDIR /path/to/directory
+Here, /path/to/directory is the absolute path to the directory that you want to set as the working directory.
+
+For example, consider the following Dockerfile:
+
+FROM python:3.8
+WORKDIR /app
+COPY . /app
+RUN pip install -r requirements.txt
+CMD ["python", "app.py"]
+In this Dockerfile, the WORKDIR instruction sets the working directory to /app. The COPY instruction copies the contents of the current directory to the /app directory in the image. The RUN instruction installs the dependencies specified in the requirements.txt file in the /app directory. Finally, the CMD instruction sets the command to run when a container is started from this image.
+
+By using the WORKDIR instruction, we ensure that all subsequent commands are executed in the /app directory, which is where our application code is located. This makes the Dockerfile easier to read and helps avoid mistakes when specifying paths in the RUN, CMD, and other instructions.
+
+#### Here is the few examples for WORKDIR  ########
+
+1. Setting the working directory for a Node.js application
+Let's say you have a Node.js application that requires certain dependencies to be installed. You can use the WORKDIR instruction to ensure that all subsequent commands are executed in the appropriate directory for the application. Here's an example Dockerfile:
+
+FROM node:14
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+CMD ["npm", "start"]
+
+In this example, the WORKDIR instruction sets the working directory to /app, which is where we want to install the application dependencies and run the application. The COPY instruction copies the package*.json file to the /app directory in the image. The RUN instruction installs the dependencies specified in package.json. Finally, the second COPY instruction copies the entire contents of the current directory to the /app directory in the image. When the container is started from this image, the CMD instruction runs the npm start command in the /app directory.
+
+2. Setting the working directory for a Python application
+Similar to the previous example, let's say you have a Python application that requires certain dependencies to be installed. You can use the WORKDIR instruction to ensure that all subsequent commands are executed in the appropriate directory for the application. Here's an example Dockerfile:
+
+FROM python:3.8
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD ["python", "app.py"]
+
+In this example, the WORKDIR instruction sets the working directory to /app, which is where we want to install the application dependencies and run the application. The COPY instruction copies the requirements.txt file to the /app directory in the image. The RUN instruction installs the dependencies specified in requirements.txt. Finally, the second COPY instruction copies the entire contents of the current directory to the /app directory in the image. When the container is started from this image, the CMD instruction runs the python app.py command in the /app directory.
+
+#### USER ###########
+
+In a Dockerfile, the USER instruction is used to set the user and group that will run the subsequent RUN, CMD, ENTRYPOINT, COPY, and ADD instructions.
+
+The syntax for the USER instruction is:
+
+USER <user>[:<group>] or <UID>[:<GID>]
+Here, <user> is the username or user ID, and <group> is the group name or group ID. If <group> is not specified, the user's primary group will be used. If <UID> and <GID> are specified, they will be used instead of the username and group name.
+
+For example, consider the following Dockerfile:
+
+FROM python:3.8
+WORKDIR /app
+COPY . /app
+RUN pip install -r requirements.txt
+USER appuser
+CMD ["python", "app.py"]
+In this Dockerfile, the USER instruction sets the user to appuser for the subsequent RUN, CMD, and other instructions. This is done to improve security by running the application as a non-root user. The CMD instruction sets the command to run when a container is started from this image.
+
+By using the USER instruction, we ensure that the subsequent commands are executed with the permissions of the appuser user rather than the default root user. This helps to reduce the potential impact of security vulnerabilities in the application.
+
+#### USERS EXAMPLES #########
+
+Setting a non-root user for a Node.js application
+Let's say you have a Node.js application that requires a non-root user to be used for security reasons. You can use the USER instruction to ensure that all subsequent commands are executed as this non-root user. Here's an example Dockerfile:
+######
+FROM node:14
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+USER node
+CMD ["npm", "start"]
+In this example, the USER instruction sets the user to node for the subsequent RUN, CMD, and other instructions. This is done to improve security by running the application as a non-root user. The CMD instruction sets the command to run when a container is started from this image.
+
+Setting a specific user and group for a Python application
+Similar to the previous example, let's say you have a Python application that requires a specific user and group to be used for security reasons. You can use the USER instruction to ensure that all subsequent commands are executed as this specific user and group. Here's an example Dockerfile:
+###### ##########################################
+FROM python:3.8
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+USER myuser:mygroup
+CMD ["python", "app.py"]
+In this example, the USER instruction sets the user to myuser and the group to mygroup for the subsequent RUN, CMD, and other instructions. This is done to improve security by running the application as a specific user and group. The CMD instruction sets the command to run when a container is started from this image.
+
+######  VOLUME #########
+
+In Docker, a volume is a mechanism for persisting data generated by and used by Docker containers. Volumes provide a way to share data between containers and between the host machine and containers.
+
+Volumes are created using the docker volume create command or can be specified in a Dockerfile or docker-compose file. Once a volume is created, it can be mounted to a container using the docker run command or in a Dockerfile using the VOLUME instruction.
+
+Volumes are stored in a part of the host filesystem that is managed by Docker. They can be created as named volumes or anonymous volumes. Named volumes are created with a specific name and can be used by multiple containers, while anonymous volumes are temporary and only used by a single container.
+
+Here's an example of how to create and use a named volume in a Dockerfile:
+
+######
+FROM node:14
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+VOLUME /app/data
+CMD ["npm", "start"]
+In this example, the VOLUME instruction creates a named volume called /app/data. This volume will be created when a container is started from this image and can be used by multiple containers. Any data written to the /app/data directory in the container will be stored in the named volume and will persist even after the container is deleted.
+
+You can mount the named volume to a container using the docker run command with the -v option:
+######
+
+docker run -v myvolume:/app/data myimage
+This will create a container using the myimage image and mount the named volume myvolume to the /app/data directory in the container.
+
+#### Volume Examples ########
+
+1. Persisting data for a database container
+Let's say you have a Docker container running a database server, and you want to persist the data stored in the database even if the container is deleted or recreated. You can use a volume to store the database data outside of the container. Here's an example docker run command:
+
+docker run -v mydatabase:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=mysecretpassword mysql:8.0
+This command creates a named volume called mydatabase and mounts it to the /var/lib/mysql directory in the container running the MySQL 8.0 image. The -e option sets the root password for the MySQL server.
+
+2. Sharing files between containers
+Let's say you have two Docker containers running, one for a web server and one for a database server, and you want to share files between them. You can use a volume to share a directory between the two containers. Here's an example docker run command:
+
+docker run -d --name db -v db_data:/var/lib/mysql mysql:8.0
+docker run -d --name web -p 80:80 --link db:mysql -v web_data:/var/www/html mywebapp:latest
+This command creates two named volumes, db_data and web_data, and mounts them to the /var/lib/mysql directory in the db container and the /var/www/html directory in the web container. The --link option creates a network link between the two containers, allowing them to communicate with each other.
+
+3. Developing applications using a bind mount
+Let's say you're developing a Node.js application on your local machine, and you want to test it in a Docker container. You can use a bind mount to mount the local directory containing the application code into the container. Here's an example docker run command:
+
+docker run -p 3000:3000 -v $(pwd):/app mynodeapp:latest
+This command mounts the current directory (the one you're in when you run the command) to the /app directory in the container running the mynodeapp image. The -p option maps port 3000 in the container to port 3000 on your local machine, allowing you to access the application running in the container from your web browser.
