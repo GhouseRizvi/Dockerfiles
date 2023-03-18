@@ -7,3 +7,4 @@ FROM alpine
 RUN apk update
 RUN apk add nginx
 ONBUILD ADD simple.txt /tmp/
+CMD ["nginx", "-g", "daemon off;"]
