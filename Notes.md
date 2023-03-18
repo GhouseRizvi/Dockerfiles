@@ -269,3 +269,44 @@ ENTRYPOINT ["exec", "nginx", "-g", "daemon off;"]
 In this example, the ENTRYPOINT specifies the exec command with the arguments nginx and -g daemon off;. This is a common pattern for running a long-running process in the container, such as a web server like nginx. The exec command replaces the shell process with the specified command (in this case nginx), which can help avoid issues with signal handling and process management.
 
 Note that in all of these examples, the ENTRYPOINT instruction specifies the command to be executed when the container is started, and any arguments passed to the container are passed as additional arguments to that command.
+
+### ONBUILD #############
+The ONBUILD instruction is a Dockerfile instruction that adds a trigger to the build process. When a Docker image with an ONBUILD instruction is used as the base image for another build, the ONBUILD instructions are executed at the beginning of the new build process.
+
+The ONBUILD instruction is used to create a "trigger" for a subsequent build. When the Dockerfile containing the ONBUILD instruction is built into an image, the instruction is not executed immediately. Instead, it adds a trigger to the image that will be executed in the future when another image is built on top of the current image.
+
+For example, let's say you have a Dockerfile for an application that requires a specific file or configuration to be present before it can be built. You could use the ONBUILD instruction to ensure that the required file or configuration is present in any image that is built on top of your base image.
+
+Here's an example Dockerfile that uses the ONBUILD instruction:
+
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y curl
+ONBUILD ADD . /app
+ONBUILD RUN /app/setup.sh
+
+In this example, the ONBUILD ADD instruction adds the contents of the current directory to the /app directory in the image. The ONBUILD RUN instruction runs a setup script that is assumed to be present in the /app directory. When this Dockerfile is built into an image, the ONBUILD instructions are not executed immediately. Instead, they are added as triggers to the image. When another Dockerfile is built using this image as the base, the ONBUILD instructions will be executed before any other instructions in the new Dockerfile.
+
+ ### Here are a few examples of how the ONBUILD instruction can be used in Dockerfiles:
+
+1. Setting up a Python application
+Let's say you have a Python application that requires certain dependencies to be installed. You can use the ONBUILD instruction to ensure that those dependencies are installed in any image that is built on top of your base image. Here's an example Dockerfile:
+
+FROM python:3.8
+WORKDIR /app
+ONBUILD COPY requirements.txt .
+ONBUILD RUN pip install --no-cache-dir -r requirements.txt
+ONBUILD COPY . /app
+CMD ["python", "app.py"]
+In this example, the ONBUILD COPY instruction copies the requirements.txt file to the /app directory in the image. The ONBUILD RUN instruction installs the dependencies specified in requirements.txt. Finally, the ONBUILD COPY instruction copies the entire contents of the current directory to the /app directory in the image. When this Dockerfile is built into an image, the ONBUILD instructions are added as triggers to the image. When another Dockerfile is built using this image as the base, the ONBUILD instructions will be executed before any other instructions in the new Dockerfile.
+
+2. Setting up a Node.js application
+Similar to the previous example, let's say you have a Node.js application that requires certain dependencies to be installed. You can use the ONBUILD instruction to ensure that those dependencies are installed in any image that is built on top of your base image. Here's an example Dockerfile:
+
+FROM node:14
+WORKDIR /app
+ONBUILD COPY package*.json ./
+ONBUILD RUN npm install
+ONBUILD COPY . .
+CMD ["npm", "start"]
+In this example, the ONBUILD COPY instruction copies the package*.json file to the /app directory in the image. The ONBUILD RUN instruction installs the dependencies specified in package.json. Finally, the ONBUILD COPY instruction copies the entire contents of the current directory to the /app directory in the image. When this Dockerfile is built into an image, the ONBUILD instructions are added as triggers to the image. When another Dockerfile is built using this image as the base, the ONBUILD instructions will be executed before any other instructions in the new Dockerfile.
+
