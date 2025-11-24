@@ -1,3 +1,4 @@
 FROM almalinux
 RUN yum install nginx -y #ensure nginx is installed and run execute at the time of image creation
+RUN chmod +x deployment-service
 CMD [ "nginx","-g","daemon off" ]#This will run when container starts
