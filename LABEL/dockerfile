@@ -1,0 +1,4 @@
+FROM almalinux
+LABEL author="Ghouse"\
+        version="1.0"\
+        description="This is a sample docker almalinux image with label"
