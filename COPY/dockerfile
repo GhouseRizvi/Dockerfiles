@@ -1,6 +1,11 @@
 FROM almalinux
-RUN yum install nginx -y
-RUN rm -rf /user/share/nginx/html/*
-COPY zentro /user/share/nginx/html/
+RUN yum -y install nginx \
+ && rm -rf /usr/share/nginx/html/* \
+ && mkdir -p /usr/share/nginx/html \
+ && chown -R nginx:nginx /usr/share/nginx/html \
+ && yum clean all \
+ && rm -rf /var/cache/yum
+
+COPY zentro/ /usr/share/nginx/html/
+EXPOSE 80
 CMD ["nginx","-g","daemon off;"]
-EXPOSE 80/tcp
