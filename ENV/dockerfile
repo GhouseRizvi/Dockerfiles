@@ -1,0 +1,4 @@
+FROM almalinux
+ENV AUTHOR="GHOUSE"\
+    VERSION="1.0"\
+    DESCRIPTION="This is my first dockerfile with ENV instruction"
