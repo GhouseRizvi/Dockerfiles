@@ -5,11 +5,11 @@ RUN dnf -y install nginx unzip && dnf clean all && \
 # ADD will download the URL at build time
 ADD https://www.tooplate.com/zip-templates/2143_inner_peace.zip template.zip
 
-RUN unzip template.zip 
-    && rm -rf /usr/share/nginx/html/* 
-    && mv 2143_inner_peace/* /usr/share/nginx/html/ \
-    && rm -rf 2143_inner_peace template.zip \   
-    && chown -R nginx:nginx /usr/share/nginx/html
+RUN unzip template.zip && \
+    rm -rf /usr/share/nginx/html/* && \
+    mv 2143_inner_peace/* /usr/share/nginx/html/ && \
+    rm -rf 2143_inner_peace template.zip && \
+    chown -R nginx:nginx /usr/share/nginx/html
     
 
 EXPOSE 80
