@@ -1,8 +1,12 @@
 FROM almalinux
-RUN yum install nginx zip unzip -y 
-RUN mkdir -p webfile
-RUN cd webfile
-ADD https://www.tooplate.com/zip-templates/2143_inner_peace.zip /webfile/
-RUN unzip /webfile/2143_inner_peace.zip -d /usr/share/nginx/html/
+RUN dnf -y install nginx unzip && dnf clean all && \
+    mkdir -p /usr/share/nginx/html
+
+# ADD will download the URL at build time
+ADD https://www.tooplate.com/zip-templates/2143_inner_peace.zip template.zip
+
+RUN unzip template.zip -d /usr/share/nginx/html \
+    && rm -f template.zip
+
 EXPOSE 80
-CMD [ "nginx","-g","daemon off;" ]
+CMD ["nginx", "-g", "daemon off;"]
