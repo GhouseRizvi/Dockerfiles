@@ -1,0 +1,2 @@
+The ENTRYPOINT instruction in a Dockerfile defines the default executable or command that will always run when a container starts.
+Unlike CMD, which supplies default arguments that can be easily overridden at runtime, ENTRYPOINT sets a command that is harder to override (only possible with --entrypoint flag). When ENTRYPOINT and CMD are both used, CMD provides default arguments to the ENTRYPOINT command.
