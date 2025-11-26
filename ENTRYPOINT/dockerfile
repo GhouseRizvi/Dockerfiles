@@ -1,2 +1,18 @@
+# Use AlmaLinux as the base image
 FROM almalinux
-CMD [ "ping" ,"-c5","google.com" ]
+
+# Set the default argument to ping; this can be overridden at runtime
+CMD ["facebook.com"]
+
+# Define the main command to run: ping with 5 packets
+ENTRYPOINT ["ping", "-c5"]
+
+#When both ENTRYPOINT and CMD are used, CMD provides default arguments to the ENTRYPOINT command.
+#To override ENTRYPOINT at runtime, use the --entrypoint flag with docker run.
+#docker build -t entrypointimage .
+#docker run entrypointimage
+#docker run --entrypoint ls entrypointimage -l
+#In this example, the container will execute ls -l instead of ping -c5 google.com
+#The ENTRYPOINT instruction makes the container behave like a specific executable, while CMD provides default parameters for that executable.
+#This is useful for creating containers that are intended to run a specific application or service.
+#For more details, refer to the Readme.md file in this directory.
