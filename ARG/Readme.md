@@ -7,3 +7,8 @@ RUN echo "Building version ${VERSION}"
 
 Build command to override ARG:
 docker build --build-arg VERSION=2.0 -t myimage:2.0 .
+
+NOTE: ARG DECLARED before from cannot be accessed after from.
+ 
+ ### We can also use ENV and ARG for best results
+ 
