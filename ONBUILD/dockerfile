@@ -1,0 +1,4 @@
+    FROM almalinux
+    RUN yum install nginx -y
+    ONBUILD ADD hello.txt /tmp
+    
