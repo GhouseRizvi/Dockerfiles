@@ -1,0 +1,2 @@
+FROM almalinux:9
+RUN touch /tmp/hello.txt
