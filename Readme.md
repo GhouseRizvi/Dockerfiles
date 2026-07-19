@@ -10,3 +10,8 @@ docker build -t [docker-hub-URL]/[your-username]/[imagename]:version
 docker buld -t From:v1 . tags are optional except image name.
 
 
+How to push images to registry
+docker push [docker-hub-URL]/[your-username]/[imagename]:version
+
+docker push registryurl from:v1
+
