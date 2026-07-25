@@ -1,4 +1,4 @@
-FROM centos:8
+FROM almalinux
 RUN yum install -y epel-release && \
     yum install -y nginx && \
     rm -rf /usr/share/nginx/html/index.html
