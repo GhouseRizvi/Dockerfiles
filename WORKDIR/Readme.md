@@ -1,1 +1,1 @@
-Workdir is used to set the working directory for the user.
+Workdir is used to set the working directory for the container.
