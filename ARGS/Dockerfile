@@ -4,6 +4,6 @@ ARG VERSION
 #setting a default value to 8
 FROM almalinux:${VERSION:-8}
 #Adding another argument to the image
-ARG GREETING
+ARG GREETING="Hello World"
 RUN echo "$GREETING"
 RUN echo "$VERSION"
