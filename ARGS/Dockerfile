@@ -3,3 +3,4 @@
 ARG VERSION
 #setting a default value to 8
 FROM almalinux:${VERSION:-8}
+RUN echo "$VERSION"
