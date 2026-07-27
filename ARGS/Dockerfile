@@ -5,5 +5,6 @@ ARG VERSION
 FROM almalinux:${VERSION:-8}
 #Adding another argument to the image
 ARG GREETING="Hello World"
-RUN echo "$GREETING"
+ENV GREET=$GREETING
+RUN echo "$GREET"
 RUN echo "$VERSION"
